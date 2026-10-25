@@ -1,7 +1,16 @@
-import { useState } from "react";
+import {
+  Routes,
+  Route,
+} from "react-router";
+
+import Signup from "./pages/Signup";
 
 function App() {
-  return <h1>Hello world</h1>;
+  return (
+    <Routes>
+      <Route path="/signup" element={<Signup />} />
+    </Routes>
+  );
 }
 
 export default App;

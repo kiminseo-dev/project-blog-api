@@ -4,12 +4,12 @@ import "dotenv/config";
 const PORT = process.env.PORT || 3000;
 
 const app = express();
+import { authRouter } from "./routes/authRouter.js";
 
 app.use(express.json()); // body converts to json
 app.use(express.urlencoded({ extended: true })); // allows nested data
 
-app.get("/", (req, res) => {
-  res.send("hello world");
-});
+// authentication router
+app.use("/api/auth", authRouter);
 
 app.listen(PORT, () => console.log(`App running on Port: ${PORT}`));
