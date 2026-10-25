@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 export default function Signup() {
+  // signup message (errors, success)
   const [message, setMessage] = useState("");
 
   async function handleSignup(event) {
@@ -17,6 +18,7 @@ export default function Signup() {
     };
 
     try {
+      // signup post request
       const response = await fetch("/api/auth/signup", {
         method: "POST",
         headers: {
@@ -29,7 +31,7 @@ export default function Signup() {
 
       // this is after result because the server sends back useful information and parsing it first result.message is accessible
       if (!response.ok) {
-        // throw new Error 
+        // throw new Error
         // stops execution in try block and jumps to the matching catch block
         throw new Error(result.message || "Something went wrong");
       }
@@ -37,7 +39,7 @@ export default function Signup() {
       setMessage("Account created");
       console.log(result);
     } catch (err) {
-        setMessage(err.message);
+      setMessage(err.message);
     }
   }
 
