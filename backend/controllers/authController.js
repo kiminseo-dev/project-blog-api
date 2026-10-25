@@ -3,6 +3,60 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
 
+export function notAuthenticated(req, res, next) {
+  // authorization header
+  const authHeader = req.headers.authorization;
+
+  // No token provided: allow login/signup
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return next();
+  }
+
+  try {
+    // extract token after Bearer
+    const token = authHeader.split(" ")[1];
+
+    // verify the token
+    jwt.verify(token, process.env.JWT_SECRET);
+
+    // already logged in
+    return res.status(403).json({
+      message: "You are already logged in",
+    });
+  } catch (err) {
+    return next();
+  }
+}
+
+export function verifyToken(req, res, next) {
+  // get auth header
+  const authHeader = req.headers.authorization;
+
+  // check if auth header was provided
+  // check if correct format was provided
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({
+      message: "Authentication required",
+    });
+  }
+
+  try {
+    // get token
+    const token = authHeader.split(" ")[1];
+    // check token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // req.user gets the userId
+    req.user = decoded;
+
+    next();
+  } catch (err) {
+    return res.status(401).json({
+      message: "Invalid or expired token",
+    });
+  }
+}
+
 export async function createUser(req, res) {
   try {
     // hashing password before saving
@@ -88,4 +142,29 @@ export async function authenticateUser(req, res) {
       message: "Internal server error",
     });
   }
+}
+
+export async function getCurrentUser(req, res) {
+  // find by userId
+  // get id name and username
+  const user = await prisma.user.findUnique({
+    where: {
+      id: req.user.userId,
+    },
+    select: {
+      id: true,
+      name: true,
+      username: true,
+    },
+  });
+
+  // user not found
+  if (!user) {
+    return res.status(404).json({
+      message: "User not found",
+    });
+  }
+
+  // return user data
+  return res.json(user);
 }

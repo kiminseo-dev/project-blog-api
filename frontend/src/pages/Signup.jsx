@@ -8,14 +8,16 @@ export default function Signup() {
     // prevents the browsers event default
     event.preventDefault();
 
-    // get from data
+    // get form data
     const formData = new FormData(event.currentTarget);
-    // extract from data
+    // extract from form data
     const data = {
       name: formData.get("name"),
       username: formData.get("username"),
       password: formData.get("password"),
     };
+
+    const token = sessionStorage.getItem("token");
 
     try {
       // signup post request
@@ -23,13 +25,14 @@ export default function Signup() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(data),
       });
       // convert to json
       const result = await response.json();
 
-      // this is after result because the server sends back useful information and parsing it first result.message is accessible
+      // this is after result because the server sends back useful information and parsing it first result.message is available
       if (!response.ok) {
         // throw new Error
         // stops execution in try block and jumps to the matching catch block
@@ -45,6 +48,7 @@ export default function Signup() {
 
   return (
     <div>
+      <a href="/">Home</a>
       <h1>Sign up page</h1>
       <form onSubmit={handleSignup}>
         <label htmlFor="name">Name:</label>
