@@ -31,7 +31,7 @@ export default function Home() {
     }
 
     fetchUser();
-  });
+  }, []);
 
   function handleLogout() {
     sessionStorage.removeItem("token");
