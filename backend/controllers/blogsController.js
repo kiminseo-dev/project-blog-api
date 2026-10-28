@@ -1,10 +1,13 @@
 import { prisma } from "../lib/prisma.js";
 
-
 export async function getBlogs(req, res) {
   try {
     // get blogs
-    const blogs = await prisma.blog.findMany();
+    const blogs = await prisma.blog.findMany({
+      orderBy: {
+        createdAt: "desc", // latest first
+      },
+    });
 
     // send blogs []
     res.json(blogs);

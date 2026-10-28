@@ -17,9 +17,10 @@ export default function Signup() {
       password: formData.get("password"),
     };
 
-    const token = sessionStorage.getItem("token");
-
     try {
+      // get token
+      const token = sessionStorage.getItem("token");
+      
       // signup post request
       const response = await fetch("/api/auth/signup", {
         method: "POST",
