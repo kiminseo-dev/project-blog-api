@@ -4,50 +4,38 @@ import jwt from "jsonwebtoken";
 import "dotenv/config";
 
 export function notAuthenticated(req, res, next) {
-  // authorization header
-  const authHeader = req.headers.authorization;
-
-  // No token provided: allow login/signup
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return next();
-  }
-
   try {
+    // authorization header
+    const authHeader = req.headers.authorization;
+
     // extract token after Bearer
     const token = authHeader.split(" ")[1];
 
     // verify the token
-    jwt.verify(token, process.env.JWT_SECRET);
+    const user = jwt.verify(token, process.env.JWT_SECRET);
 
     // already logged in
     return res.status(403).json({
       message: "You are already logged in",
     });
   } catch (err) {
+    // jwt is not there or invalid
     return next();
   }
 }
 
 export function verifyToken(req, res, next) {
-  // get auth header
-  const authHeader = req.headers.authorization;
-
-  // check if auth header was provided
-  // check if correct format was provided
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({
-      message: "Authentication required",
-    });
-  }
-
   try {
+    // get auth header
+    const authHeader = req.headers.authorization;
+
     // get token
     const token = authHeader.split(" ")[1];
     // check token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = jwt.verify(token, process.env.JWT_SECRET);
 
     // req.user gets the userId
-    req.user = decoded;
+    req.user = user;
 
     next();
   } catch (err) {
