@@ -3,9 +3,16 @@ const blogsRouter = Router();
 import * as blogsController from "../controllers/blogsController.js";
 import * as authController from "../controllers/authController.js";
 
-blogsRouter.get("/", authController.verifyToken, blogsController.getBlogs);
+// verify jwt token
+blogsRouter.use(authController.verifyToken)
+
+// get all blogs
+blogsRouter.get("/", blogsController.getBlogs);
+
+// get specific blog
+blogsRouter.get("/:id", blogsController.getBlog);
 
 // make a blog
-blogsRouter.post("/", authController.verifyToken, blogsController.createBlog);
+blogsRouter.post("/", blogsController.createBlog);
 
 export { blogsRouter };
