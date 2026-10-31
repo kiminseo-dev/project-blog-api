@@ -35,6 +35,9 @@ export default function Home() {
 
   function handleLogout() {
     sessionStorage.removeItem("token");
+    setUser({
+      name: "Guest",
+    });
   }
 
   return (
@@ -42,7 +45,8 @@ export default function Home() {
       <h1>Home</h1>
       <h2>Hello, {user.name}</h2>
       <a href="/login">Log in</a>
-      <a href="signup">Sign up</a>
+      <a href="/signup">Sign up</a>
+      <a href="/blogs">Blogs</a>
       <button onClick={handleLogout}>Log out</button>
     </div>
   );

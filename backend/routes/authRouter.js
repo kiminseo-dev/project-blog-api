@@ -7,10 +7,17 @@ authRouter.post(
   authController.notAuthenticated, // check if user is logged in
   authController.createUser,
 );
+
 authRouter.post(
   "/login",
   authController.notAuthenticated, // check if user is logged in
   authController.authenticateUser,
+);
+
+authRouter.post(
+  "/login/admin",
+  authController.notAuthenticated,
+  authController.authenticateAdmin,
 );
 
 authRouter.get(

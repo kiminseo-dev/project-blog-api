@@ -1,10 +1,10 @@
 import { Router } from "express";
 const blogsRouter = Router();
 import * as blogsController from "../controllers/blogsController.js";
-import * as authController from "../controllers/authController.js";
+import { verifyToken } from "../controllers/authController.js";
 
 // verify jwt token
-blogsRouter.use(authController.verifyToken)
+blogsRouter.use(verifyToken);
 
 // get all blogs
 blogsRouter.get("/", blogsController.getBlogs);

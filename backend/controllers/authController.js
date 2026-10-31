@@ -156,3 +156,59 @@ export async function getCurrentUser(req, res) {
   // return user data
   return res.json(user);
 }
+
+export async function authenticateAdmin(req, res) {
+  try {
+    // find user by username
+    const user = await prisma.user.findUnique({
+      where: {
+        username: req.body.username,
+      },
+    });
+
+    // username not found
+    if (!user) {
+      // 401 - Unauthorized
+      return res.status(401).json({
+        message: "Invalid username or password",
+      });
+    }
+
+    // check if password is valid
+    const match = await bcrypt.compare(req.body.password, user.password);
+
+    // password incorrect
+    if (!match) {
+      // 401 - Unauthorized
+      return res.status(401).json({
+        message: "Invalid username or password",
+      });
+    }
+
+    if (!user.admin) {
+      return res.status(403).json({
+        message: "Forbidden: Admin access required",
+      });
+    }
+
+    // creates json web token
+    const token = jwt.sign(
+      { userId: user.id }, // the data to put in the token
+      process.env.JWT_SECRET, // sign the token so it cant be forged
+      { expiresIn: "1h" },
+    );
+
+    // sending back the token
+    return res.status(200).json({
+      message: "Login successful",
+      token,
+    });
+  } catch (err) {
+    console.error(err);
+
+    // 500 - internal server error
+    return res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+}

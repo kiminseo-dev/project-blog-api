@@ -16,9 +16,9 @@ export default function Login() {
       password: formData.get("password"),
     };
 
-    const token = sessionStorage.getItem("token");
-
     try {
+      const token = sessionStorage.getItem("token");
+
       // login post request to server
       const response = await fetch("/api/auth/login", {
         method: "POST",
