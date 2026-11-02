@@ -12,7 +12,4 @@ blogsRouter.get("/", blogsController.getBlogs);
 // get specific blog
 blogsRouter.get("/:id", blogsController.getBlog);
 
-// make a blog
-blogsRouter.post("/", blogsController.createBlog);
-
 export { blogsRouter };

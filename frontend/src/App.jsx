@@ -16,7 +16,7 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/blogs" element={<Blogs />} />
       <Route path="/author" element={<Author />} />
-      <Route path="/blogs/create" element={<BlogCreate />} />
+      <Route path="/author/blogs/create" element={<BlogCreate />} />
       <Route path="/blogs/:id" element={<Blog />} />
     </Routes>
   );

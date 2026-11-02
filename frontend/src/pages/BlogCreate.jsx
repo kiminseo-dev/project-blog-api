@@ -20,7 +20,7 @@ export default function BlogCreate() {
       const token = sessionStorage.getItem("token");
 
       // create blog post request
-      const response = await fetch("/api/blogs", {
+      const response = await fetch("/api/author/blogs/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

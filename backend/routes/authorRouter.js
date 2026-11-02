@@ -6,6 +6,12 @@ import { verifyToken } from "../controllers/authController.js";
 // verify user token
 authorRouter.use(verifyToken);
 
+// getting all the blogs
 authorRouter.get("/", authorController.getAllBlogs);
 
+// create new blog
+authorRouter.post("/blogs/create", authorController.createBlog);
+
+// publish or unpublish blog
+authorRouter.patch("/blogs/:id/status", authorController.updateBlogStatus);
 export { authorRouter };
