@@ -45,8 +45,13 @@ export default function Home() {
       <h1>Home</h1>
       <h2>Hello, {user.name}</h2>
       <a href="/login">Log in</a>
+      <br></br> 
       <a href="/signup">Sign up</a>
+      <br></br>
       <a href="/blogs">Blogs</a>
+      <br></br>
+      <a href="/author">Author</a>
+      <br></br>
       <button onClick={handleLogout}>Log out</button>
     </div>
   );
