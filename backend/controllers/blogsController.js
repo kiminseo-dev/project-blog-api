@@ -57,7 +57,7 @@ export async function createBlog(req, res) {
 
     // authorize user if author
     if (!user.author) {
-      res.status(403).json({
+      return res.status(403).json({
         message: "Not an Author",
       });
     }
