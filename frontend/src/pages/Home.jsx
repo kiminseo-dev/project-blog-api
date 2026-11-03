@@ -45,7 +45,7 @@ export default function Home() {
       <h1>Home</h1>
       <h2>Hello, {user.name}</h2>
       <a href="/login">Log in</a>
-      <br></br> 
+      <br></br>
       <a href="/signup">Sign up</a>
       <br></br>
       <a href="/blogs">Blogs</a>

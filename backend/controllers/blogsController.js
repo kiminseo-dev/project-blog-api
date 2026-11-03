@@ -3,11 +3,19 @@ import { prisma } from "../lib/prisma.js";
 export async function getBlog(req, res) {
   try {
     // get blog from db with id
-    const blog = await prisma.blog.findUnique({
+    const blog = await prisma.blog.findFirst({
       where: {
         id: Number(req.params.id),
         published: true,
       },
+      // also get the username
+      include: {
+        user: {
+          select: {
+            username: true,
+          }
+        }
+      }
     });
 
     if (!blog) {

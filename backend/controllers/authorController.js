@@ -149,3 +149,56 @@ export async function updateBlogStatus(req, res) {
     });
   }
 }
+
+export async function readBlogAsAuthor(req, res) {
+  try {
+    // get user
+    const user = await prisma.user.findUnique({
+      where: {
+        id: req.user.userId,
+      },
+    });
+
+    if (!user) {
+      // 404 - not found
+      return res.status(404).json({
+        message: "user not found",
+      });
+    }
+
+    if (!user.author) {
+      // 403 - not authorized
+      return res.status(403).json({
+        message: "you are not an author",
+      });
+    }
+
+    const blog = await prisma.blog.findUnique({
+      where: {
+        id: Number(req.params.id),
+      },
+    });
+
+    if (!blog) {
+      // 404 - not found
+      return res.status(404).json({
+        message: "blog not found",
+      });
+    }
+
+    if (user.id !== blog.userId) {
+      // 403 - unauthorized
+      return res.status(403).json({
+        message: "this is not your blog",
+      });
+    }
+
+    res.json(blog);
+  } catch (err) {
+    console.error(err);
+    // 500 - internal server error
+    res.status(500).json({
+      message: "internal server error",
+    });
+  }
+}

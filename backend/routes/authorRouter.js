@@ -9,6 +9,9 @@ authorRouter.use(verifyToken);
 // getting all the blogs
 authorRouter.get("/", authorController.getAllBlogs);
 
+// read blog as admin
+authorRouter.get("/blogs/:id", authorController.readBlogAsAuthor);
+
 // create new blog
 authorRouter.post("/blogs/create", authorController.createBlog);
 

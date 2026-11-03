@@ -45,6 +45,9 @@ export default function BlogCreate() {
 
   return (
     <div>
+      <a href="/">Home</a>
+      <br></br>
+      <a href="/author">Author</a>
       <h1>Create A Blog</h1>
       <form onSubmit={handleCreate}>
         <label htmlFor="name">Title:</label>

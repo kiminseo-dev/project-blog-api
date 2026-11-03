@@ -60,7 +60,7 @@ export default function Author() {
         throw new Error(result.message || "Something went wrong");
       }
 
-      setRefresh(prev => !prev);
+      setRefresh((prev) => !prev);
     } catch (err) {
       console.error(err);
     }
@@ -68,13 +68,16 @@ export default function Author() {
 
   return (
     <div>
+      <a href="/">Home</a>
       <h1>Author</h1>
-      <a href="/author/blogs/create">Create Blog</a>
+      <a href="/author/blogs/create">
+        <strong>Create Blog</strong>
+      </a>
       {blogs.map((blog) => (
         <fieldset key={blog.id}>
           <h2>{blog.title}</h2>
           <p>{blog.text}</p>
-          <a href={`/blogs/${blog.id}`}>Read blog</a>
+          <a href={`/author/blogs/${blog.id}`}>Read blog</a>
           <br></br>
           <button onClick={() => handleBlogStatusChange(blog)}>
             {blog.published ? "unpublish" : "publish"}

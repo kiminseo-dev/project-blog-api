@@ -30,6 +30,7 @@ export default function Blogs() {
 
   return (
     <div>
+      <a href="/">Home</a>
       <h1>Blogs</h1>
       {blogs.map((blog) => (
         <fieldset key={blog.id}>

@@ -39,14 +39,24 @@ export default function Blog() {
 
   return (
     <div>
+      <a href="/">Home</a>
+      <br></br>
+      <a href="/blogs">Blogs</a>
       {message && <p>{message}</p>}
 
       {blog && (
         <div>
           <h1>{blog.title}</h1>
           <p>{blog.text}</p>
-          <p>Created: {blog.createdAt}</p>
-          <p>Updated: {blog.updatedAt}</p>
+          <p>
+            <strong>Created:</strong> {blog.createdAt}
+          </p>
+          <p>
+            <strong>Updated:</strong> {blog.updatedAt}
+          </p>
+          <p>
+            <strong>Author:</strong> {blog.user.username}
+          </p>
         </div>
       )}
     </div>
