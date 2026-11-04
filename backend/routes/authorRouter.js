@@ -17,4 +17,7 @@ authorRouter.post("/blogs/create", authorController.createBlog);
 
 // publish or unpublish blog
 authorRouter.patch("/blogs/:id/status", authorController.updateBlogStatus);
+
+authorRouter.patch("/blogs/:id/update", authorController.updateBlog);
+
 export { authorRouter };

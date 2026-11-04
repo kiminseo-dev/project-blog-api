@@ -79,6 +79,8 @@ export default function Author() {
           <p>{blog.text}</p>
           <a href={`/author/blogs/${blog.id}`}>Read blog</a>
           <br></br>
+          <a href={`/author/blogs/${blog.id}/edit`}>Edit Blog</a>
+          <br></br>
           <button onClick={() => handleBlogStatusChange(blog)}>
             {blog.published ? "unpublish" : "publish"}
           </button>

@@ -8,6 +8,7 @@ import BlogCreate from "./pages/BlogCreate";
 import Blog from "./pages/Blog";
 import Author from "./pages/Author";
 import AuthorBlog from "./AuthorBlog";
+import BlogEdit from "./pages/BlogEdit";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       <Route path="/author" element={<Author />} />
       <Route path="/author/blogs/create" element={<BlogCreate />} />
       <Route path="/author/blogs/:id" element={<AuthorBlog />} />
+      <Route path="/author/blogs/:id/edit" element={<BlogEdit />} />
       <Route path="/blogs/:id" element={<Blog />} />
     </Routes>
   );

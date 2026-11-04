@@ -133,7 +133,7 @@ export async function updateBlogStatus(req, res) {
     // update blog
     const updatedBlog = await prisma.blog.update({
       where: {
-        id: Number(req.params.id),
+        id: blog.id,
       },
       data: {
         ...req.body,
@@ -199,6 +199,74 @@ export async function readBlogAsAuthor(req, res) {
     // 500 - internal server error
     res.status(500).json({
       message: "internal server error",
+    });
+  }
+}
+
+export async function updateBlog(req, res) {
+  // get user
+  const user = await prisma.user.findUnique({
+    where: {
+      id: req.user.userId,
+    },
+  });
+
+  // user not found
+  if (!user) {
+    // 404 resource not found
+    return res.status(404).json({
+      message: "user not found",
+    });
+  }
+
+  // user not found
+  if (!user.author) {
+    // 403 - unauthorized
+    return res.status(403).json({
+      message: "you are not an admin",
+    });
+  }
+
+  const blog = await prisma.blog.findUnique({
+    where: {
+      id: Number(req.params.id),
+    },
+  });
+
+  // blog not found 404 status
+  if (!blog) {
+    return res.status(404).json({
+      message: "blog not found",
+    });
+  }
+
+  // user id does not match blog userid
+  if (user.id !== blog.userId) {
+    return res.status(403).json({
+      message: "not your blog",
+    });
+  }
+
+  const updatedBlog = await prisma.blog.update({
+    where: {
+      id: blog.id,
+    },
+    data: {
+      ...req.body,
+    },
+  });
+
+  // send updatedBlog
+  res.json({
+    updatedBlog,
+    message: "updated",
+  });
+  try {
+  } catch (err) {
+    console.error(err);
+    // 500 - internal server error
+    res.status(500).json({
+      message: "internal server",
     });
   }
 }
