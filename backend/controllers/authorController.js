@@ -270,3 +270,65 @@ export async function updateBlog(req, res) {
     });
   }
 }
+
+export async function deleteBlog(req, res) {
+  try {
+    // get user
+    const user = await prisma.user.findUnique({
+      where: {
+        id: req.user.userId,
+      },
+    });
+
+    // user does not exist
+    if (!user) {
+      return res.status(404).json({
+        message: "user not found",
+      });
+    }
+
+    // user not found
+    if (!user.author) {
+      // 403 - unauthorized
+      return res.status(403).json({
+        message: "you are not an admin",
+      });
+    }
+
+    // get blog
+    const blog = await prisma.blog.findUnique({
+      where: {
+        id: Number(req.params.id),
+      },
+    });
+
+    // if blog does not exist
+    if (!blog) {
+      return res.status(404).json({
+        message: "user not found",
+      });
+    }
+
+    // user id and blog user id does not match
+    if (user.id !== blog.userId) {
+      return res.status(403).json({
+        message: "this is not your blog",
+      });
+    }
+
+    // delete blog
+    const deleteBlog = await prisma.blog.delete({
+      where: {
+        id: blog.id,
+      },
+    });
+
+    res.json(deleteBlog);
+  } catch (err) {
+    console.error(err);
+
+    res.status(500).json({
+      message: "internal server error",
+    });
+  }
+}

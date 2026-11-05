@@ -66,6 +66,36 @@ export default function Author() {
     }
   }
 
+  async function handleBlogDelete(blog) {
+    // confirm before deleting
+    if (!confirm("Are you sure you want to delete this blog?")) return;
+
+    try {
+      // get token
+      const token = sessionStorage.getItem("token");
+
+      // send post request to delete blog
+      const response = await fetch(`/api/author/blogs/${blog.id}/delete`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // convert to json
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Something went wrong");
+      }
+
+      console.log(result);
+      setRefresh(prev => !prev);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   return (
     <div>
       <a href="/">Home</a>
@@ -84,6 +114,8 @@ export default function Author() {
           <button onClick={() => handleBlogStatusChange(blog)}>
             {blog.published ? "unpublish" : "publish"}
           </button>
+          <br></br>
+          <button onClick={() => handleBlogDelete(blog)}>Delete Blog</button>
         </fieldset>
       ))}
     </div>
