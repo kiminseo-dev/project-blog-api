@@ -8,6 +8,10 @@ import { verifyToken } from "../controllers/authController.js";
 
 commentsRouter.use(verifyToken);
 
+// make comment
 commentsRouter.post("/blogs/:id", commentsController.postComment);
+
+// get comments
+commentsRouter.get("/blogs/:id", commentsController.getCommentsForBlog);
 
 export { commentsRouter };

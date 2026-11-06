@@ -48,3 +48,43 @@ export async function postComment(req, res) {
     });
   }
 }
+
+export async function getCommentsForBlog(req, res) {
+  try {
+    // get blog
+    const blog = await prisma.blog.findUnique({
+      where: {
+        id: Number(req.params.id),
+      },
+    });
+
+    // blog does not exist
+    if (!blog) {
+      return res.status(404).json({
+        message: "blog not found",
+      });
+    }
+
+    // get all comments
+    const comments = await prisma.comment.findMany({
+      where: {
+        blogId: blog.id,
+      },
+      include: {
+        user: {
+          select: {
+            username: true,
+          },
+        },
+      },
+    });
+
+    res.json(comments);
+  } catch (err) {
+    console.error(err);
+    // 500 - internal error
+    res.status(500).json({
+      message: "internal server error",
+    });
+  }
+}

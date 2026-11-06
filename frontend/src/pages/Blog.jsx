@@ -3,7 +3,10 @@ import { useState, useEffect } from "react";
 
 export default function Blog() {
   const [blog, setBlog] = useState(null);
+  const [comments, setComments] = useState([]);
   const [message, setMessage] = useState("");
+  const [refresh, setRefresh] = useState(false);
+  const [comment, setComment] = useState("");
 
   // get id from url
   const { id } = useParams();
@@ -36,6 +39,35 @@ export default function Blog() {
 
     fetchBlog();
   }, [id]);
+
+  useEffect(() => {
+    async function fetchComments() {
+      try {
+        // get token
+        const token = sessionStorage.getItem("token");
+
+        // send get request
+        const response = await fetch(`/api/comments/blogs/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        // convert to json
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.message || "something went wrong");
+        }
+
+        setComments(result);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    fetchComments();
+  }, [refresh]);
 
   async function handleCommentPost(event) {
     // prevent browser default
@@ -71,6 +103,8 @@ export default function Blog() {
       }
 
       console.log(result);
+      setComment("");
+      setRefresh((prev) => !prev);
     } catch (err) {
       console.error(err);
     }
@@ -100,9 +134,22 @@ export default function Blog() {
       )}
       <form onSubmit={handleCommentPost}>
         <label htmlFor="comment">Comment:</label>
-        <input id="comment" name="comment" type="text" required />
+        <input
+          id="comment"
+          name="comment"
+          type="text"
+          value={comment}
+          onChange={(event) => setComment(event.target.value)}
+          required
+        />
         <button type="submit">Submit</button>
       </form>
+      <h3>Comments</h3>
+      {comments.map((comment) => (
+        <p key={comment.id}>
+          {comment.user.username}: {comment.comment}
+        </p>
+      ))}
     </div>
   );
 }
