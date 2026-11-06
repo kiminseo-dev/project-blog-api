@@ -37,6 +37,45 @@ export default function Blog() {
     fetchBlog();
   }, [id]);
 
+  async function handleCommentPost(event) {
+    // prevent browser default
+    event.preventDefault();
+
+    // get form data
+    const formData = new FormData(event.currentTarget);
+
+    // extract form data
+    const data = {
+      comment: formData.get("comment"),
+    };
+
+    try {
+      // get token
+      const token = sessionStorage.getItem("token");
+
+      // send post request
+      const response = await fetch(`/api/comments/blogs/${id}`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      // convert to json
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Something went wrong");
+      }
+
+      console.log(result);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   return (
     <div>
       <a href="/">Home</a>
@@ -59,6 +98,11 @@ export default function Blog() {
           </p>
         </div>
       )}
+      <form onSubmit={handleCommentPost}>
+        <label htmlFor="comment">Comment:</label>
+        <input id="comment" name="comment" type="text" required />
+        <button type="submit">Submit</button>
+      </form>
     </div>
   );
 }

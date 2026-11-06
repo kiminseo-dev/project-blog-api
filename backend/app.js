@@ -8,6 +8,7 @@ import { authRouter } from "./routes/authRouter.js";
 import { blogsRouter } from "./routes/blogsRouter.js";
 import { authorRouter } from "./routes/authorRouter.js";
 import { adminRouter } from "./routes/adminRouter.js";
+import { commentsRouter } from "./routes/commentsRouter.js";
 
 app.use(express.json()); // body converts to json
 app.use(express.urlencoded({ extended: true })); // allows nested data
@@ -23,5 +24,8 @@ app.use("/api/author", authorRouter);
 
 // admin router
 app.use("/api/admin", adminRouter);
+
+// comment router
+app.use("/api/comments", commentsRouter);
 
 app.listen(PORT, () => console.log(`App running on Port: ${PORT}`));
