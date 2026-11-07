@@ -110,6 +110,30 @@ export default function Blog() {
     }
   }
 
+  async function handleCommentDelete(comment) {
+    try {
+      const token = sessionStorage.getItem("token");
+
+      const response = await fetch(`/api/comments/${comment.id}`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "something went wrong");
+      }
+
+      console.log(result);
+      setRefresh((prev) => !prev);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   return (
     <div>
       <a href="/">Home</a>
@@ -146,9 +170,12 @@ export default function Blog() {
       </form>
       <h3>Comments</h3>
       {comments.map((comment) => (
-        <p key={comment.id}>
-          {comment.user.username}: {comment.comment}
-        </p>
+        <div key={comment.id}>
+          <p>
+            {comment.user.username}: {comment.comment}
+          </p>
+          <button onClick={() => handleCommentDelete(comment)}>Delete</button>
+        </div>
       ))}
     </div>
   );

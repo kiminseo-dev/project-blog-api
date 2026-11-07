@@ -88,3 +88,54 @@ export async function getCommentsForBlog(req, res) {
     });
   }
 }
+
+export async function deleteComment(req, res) {
+  try {
+    // get user
+    const user = await prisma.comment.findUnique({
+      where: {
+        id: req.user.userId,
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({
+        message: "user not found",
+      });
+    }
+
+    // get comment
+    const comment = await prisma.comment.findUnique({
+      where: {
+        id: Number(req.params.id),
+      },
+    });
+
+    if (!comment) {
+      return res.status(404).json({
+        message: "comment not found",
+      });
+    }
+
+    if (user.id !== comment.userId) {
+      return res.status(403).json({
+        message: "Not your comment",
+      });
+    }
+
+    // delete comment
+    const deletedComment = await prisma.comment.delete({
+      where: {
+        id: comment.id,
+      },
+    });
+
+    res.json(deletedComment);
+  } catch (err) {
+    console.error(err);
+    // 500 - internal error
+    res.status(500).json({
+      message: "internal server error",
+    });
+  }
+}
