@@ -11,6 +11,38 @@ export default function Blog() {
   // get id from url
   const { id } = useParams();
 
+  const [user, setUser] = useState({
+    name: "Guest",
+  });
+
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        // get token from session storage
+        const token = sessionStorage.getItem("token");
+
+        // send get request
+        const response = await fetch("/api/auth/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        // if response is not valid (err)
+        if (!response.ok) return;
+
+        // convert data to json
+        const data = await response.json();
+        // save data in user state
+        setUser(data);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    fetchUser();
+  }, []);
+
   useEffect(() => {
     async function fetchBlog() {
       try {
@@ -174,7 +206,9 @@ export default function Blog() {
           <p>
             {comment.user.username}: {comment.comment}
           </p>
-          <button onClick={() => handleCommentDelete(comment)}>Delete</button>
+          {user.id === comment.user.id && (
+            <button onClick={() => handleCommentDelete(comment)}>Delete</button>
+          )}
         </div>
       ))}
     </div>

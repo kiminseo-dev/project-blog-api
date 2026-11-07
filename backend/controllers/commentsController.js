@@ -73,6 +73,7 @@ export async function getCommentsForBlog(req, res) {
       include: {
         user: {
           select: {
+            id: true,
             username: true,
           },
         },
