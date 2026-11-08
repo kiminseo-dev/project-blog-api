@@ -207,7 +207,12 @@ export default function Blog() {
             {comment.user.username}: {comment.comment}
           </p>
           {user.id === comment.user.id && (
-            <button onClick={() => handleCommentDelete(comment)}>Delete</button>
+            <>
+              <button onClick={() => handleCommentDelete(comment)}>
+                Delete
+              </button>
+              <a href={`/comments/${comment.id}/edit`}>Edit</a>
+            </>
           )}
         </div>
       ))}

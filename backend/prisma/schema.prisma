@@ -40,8 +40,9 @@ model Blog {
 }
 
 model Comment {
-  id      Int    @id @default(autoincrement())
-  comment String
+  id        Int      @id @default(autoincrement())
+  comment   String
+  createdAt DateTime @default(now())
 
   blogId Int
   blog   Blog @relation(fields: [blogId], references: [id])

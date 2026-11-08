@@ -78,6 +78,9 @@ export async function getCommentsForBlog(req, res) {
           },
         },
       },
+      orderBy: {
+        createdAt: "asc",
+      },
     });
 
     res.json(comments);
@@ -135,6 +138,82 @@ export async function deleteComment(req, res) {
   } catch (err) {
     console.error(err);
     // 500 - internal error
+    res.status(500).json({
+      message: "internal server error",
+    });
+  }
+}
+
+export async function editComment(req, res) {
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: req.user.userId,
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({
+        message: "user not found",
+      });
+    }
+
+    const comment = await prisma.comment.findUnique({
+      where: {
+        id: Number(req.params.id),
+      },
+    });
+
+    if (!comment) {
+      return res.status(404).json({
+        message: "comment not found",
+      });
+    }
+
+    if (user.id !== comment.userId) {
+      return res.status(403).json({
+        message: "this is not your comment",
+      });
+    }
+
+    const updatedComment = await prisma.comment.update({
+      where: {
+        id: comment.id,
+      },
+      data: {
+        ...req.body,
+      },
+    });
+
+    res.json({
+      message: "comment changed",
+      updatedComment,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      message: "internal server error",
+    });
+  }
+}
+
+export async function getComment(req, res) {
+  try {
+    const comment = await prisma.comment.findUnique({
+      where: {
+        id: Number(req.params.id),
+      },
+    });
+
+    if (!comment) {
+      return res.status(404).json({
+        message: "comment not found",
+      });
+    }
+
+    res.json(comment);
+  } catch (err) {
+    console.error(err);
     res.status(500).json({
       message: "internal server error",
     });

@@ -14,7 +14,13 @@ commentsRouter.post("/blogs/:id", commentsController.postComment);
 // get comments
 commentsRouter.get("/blogs/:id", commentsController.getCommentsForBlog);
 
+// get comment
+commentsRouter.get("/:id", commentsController.getComment);
+
 // delete comments
 commentsRouter.post("/:id", commentsController.deleteComment);
+
+// edit comment
+commentsRouter.patch("/:id", commentsController.editComment);
 
 export { commentsRouter };

@@ -9,6 +9,7 @@ import Blog from "./pages/Blog";
 import Author from "./pages/Author";
 import AuthorBlog from "./AuthorBlog";
 import BlogEdit from "./pages/BlogEdit";
+import CommentEdit from "./pages/CommentEdit";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
       <Route path="/author/blogs/:id" element={<AuthorBlog />} />
       <Route path="/author/blogs/:id/edit" element={<BlogEdit />} />
       <Route path="/blogs/:id" element={<Blog />} />
+      <Route path="/comments/:id/edit" element={<CommentEdit />} />
     </Routes>
   );
 }
