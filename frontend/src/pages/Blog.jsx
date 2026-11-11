@@ -202,7 +202,7 @@ export default function Blog() {
       </form>
       <h3>Comments</h3>
       {comments.map((comment) => (
-        <div key={comment.id}>
+        <fieldset key={comment.id}>
           <p>
             {comment.user.username}: {comment.comment}
           </p>
@@ -214,7 +214,7 @@ export default function Blog() {
               <a href={`/comments/${comment.id}/edit`}>Edit</a>
             </>
           )}
-        </div>
+        </fieldset>
       ))}
     </div>
   );
