@@ -7,7 +7,7 @@ import Blogs from "./pages/Blogs";
 import BlogCreate from "./pages/BlogCreate";
 import Blog from "./pages/Blog";
 import Author from "./pages/Author";
-import AuthorBlog from "./AuthorBlog";
+import AuthorBlog from "./pages/AuthorBlog";
 import BlogEdit from "./pages/BlogEdit";
 import CommentEdit from "./pages/CommentEdit";
 

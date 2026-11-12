@@ -17,7 +17,7 @@ commentsRouter.get("/blogs/:id", commentsController.getCommentsForBlog);
 // get comment
 commentsRouter.get("/:id", commentsController.getComment);
 
-// delete comments
+// delete comment
 commentsRouter.post("/:id", commentsController.deleteComment);
 
 // edit comment

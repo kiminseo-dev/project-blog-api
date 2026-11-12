@@ -96,7 +96,7 @@ export async function getCommentsForBlog(req, res) {
 export async function deleteComment(req, res) {
   try {
     // get user
-    const user = await prisma.comment.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         id: req.user.userId,
       },
